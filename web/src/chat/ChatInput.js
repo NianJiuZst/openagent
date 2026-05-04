@@ -115,27 +115,17 @@ const ChatInput = React.forwardRef(({
   const isDark = Setting.getIsDark();
 
   return (
-    <div style={{position: "absolute", bottom: 0, left: 0, right: 0, padding: "12px 24px 16px", zIndex: 1}}>
+    <div className="chat-input-shell" style={{position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 1}}>
       <UploadFileArea onFileChange={handleInputChange} />
-      <div style={{maxWidth: "700px", margin: "0 auto"}}>
+      <div className="chat-input-shell__inner">
         {files.length > 0 && (
-          <div style={{marginBottom: "10px", marginLeft: "4px", marginRight: "4px"}}>
+          <div className="chat-input-shell__attachments">
             <ChatFileInput files={files} onFileChange={onFileChange} />
           </div>
         )}
         {webSearchEnabled && (
-          <div style={{marginBottom: "10px", marginLeft: "4px"}}>
-            <div style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "6px",
-              padding: "4px 10px 4px 12px",
-              background: isDark ? "#2a2a2a" : "#eef2ff",
-              borderRadius: "20px",
-              fontSize: "12px",
-              color: Setting.getThemeColor(),
-              border: `1px solid ${Setting.getThemeColor()}33`,
-            }}>
+          <div className="chat-input-shell__status">
+            <div className="chat-input-shell__status-pill" style={{color: Setting.getThemeColor(), border: `1px solid ${Setting.getThemeColor()}33`, background: isDark ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.82)"}}>
               <GlobalOutlined style={{fontSize: "12px"}} />
               <span style={{fontWeight: 500}}>{i18next.t("chat:Web search")}</span>
               <Button
@@ -170,13 +160,9 @@ const ChatInput = React.forwardRef(({
             </div>
           </div>
         )}
-        <div style={{
-          borderRadius: "16px",
-          boxShadow: isDark ? "0 4px 24px rgba(0,0,0,0.4)" : "0 4px 24px rgba(0,0,0,0.08)",
-          overflow: "hidden",
-          border: isDark ? "1px solid #333" : "1px solid #e8eaed",
-        }}>
+        <div className="chat-input-shell__panel">
           <Sender
+            className="chat-input-sender"
             ref={senderRef}
             prefix={
               <ChatInputMenu
@@ -191,7 +177,7 @@ const ChatInput = React.forwardRef(({
             }
             loading={loading}
             disabled={disableInput}
-            style={{flex: 1, borderRadius: "16px", background: isDark ? "#1a1a1a" : "#fff", border: "none", boxShadow: "none"}}
+            style={{flex: 1, borderRadius: "18px", background: isDark ? "rgba(7,12,20,0.82)" : "rgba(255,255,255,0.88)", border: "none", boxShadow: "none"}}
             placeholder={messageError ? "" : i18next.t("chat:Type message here")}
             value={(files.length > 0 && value === "") ? " " + value : value}
             onChange={onChange}

@@ -22,14 +22,10 @@ const WelcomeHeader = ({store}) => {
   const isDark = Setting.getIsDark();
 
   return (
-    <div style={{
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: "48px 24px 32px",
-      flex: 1,
-    }}>
+    <div className="chat-welcome">
+      <div className="chat-welcome__eyebrow">
+        {store?.displayName || i18next.t("general:Chat")}
+      </div>
       <Welcome
         variant="borderless"
         icon={avatar}
@@ -37,10 +33,13 @@ const WelcomeHeader = ({store}) => {
         description={(store === undefined) ? null : store.welcomeText || i18next.t("chat:I'm here to help answer your questions")}
         style={{textAlign: "center"}}
         styles={{
-          title: {fontSize: "22px", fontWeight: 600, letterSpacing: "-0.3px"},
-          description: {fontSize: "15px", color: isDark ? "#6b7280" : "#888", marginTop: "6px"},
+          title: {fontSize: "clamp(34px, 5vw, 54px)", fontWeight: 800, letterSpacing: "-0.06em", lineHeight: 1.02},
+          description: {fontSize: "16px", color: isDark ? "#9aacbf" : "#66768c", marginTop: "14px", maxWidth: "620px", lineHeight: 1.7},
         }}
       />
+      <div className="chat-welcome__hint">
+        {i18next.t("chat:Type message here")}
+      </div>
     </div>
   );
 };

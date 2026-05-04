@@ -88,7 +88,7 @@ const BreadcrumbBar = ({uri}) => {
   if (!items) {
     return null;
   }
-  return <Breadcrumb items={items} style={{marginLeft: 8}} />;
+  return <Breadcrumb items={items} className="shell-breadcrumb" separator="/" />;
 };
 
 export default BreadcrumbBar;

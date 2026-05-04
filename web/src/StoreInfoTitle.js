@@ -288,18 +288,10 @@ const StoreInfoTitle = (props) => {
   };
 
   return (
-    <div style={{
-      padding: "6px 16px",
-      display: "flex",
-      alignItems: "center",
-      gap: "10px",
-      minHeight: "48px",
-      borderBottom: isDark ? "1px solid rgba(255,255,255,0.08)" : "1px solid #f0f0f0",
-      backgroundColor: isDark ? "#1f1f1f" : "#fafafa",
-    }}>
+    <div className="chat-toolbar-strip">
       {storeInfo && (
-        <div style={{display: "flex", alignItems: "center"}}>
-          {!isMobile && <span style={labelStyle}>{i18next.t("general:Store")}</span>}
+        <div className="chat-toolbar-strip__group">
+          {!isMobile && <span className="chat-toolbar-strip__label" style={labelStyle}>{i18next.t("general:Store")}</span>}
           <Select
             className="store-pill-select"
             value={selectedStore?.name || storeInfo.name}
@@ -326,8 +318,8 @@ const StoreInfoTitle = (props) => {
       )}
 
       {modelProviders.length > 0 && typeof onGenerationModeChange === "function" && (
-        <div style={{display: "flex", alignItems: "center"}}>
-          {!isMobile && <span style={labelStyle}>{i18next.t("chat:Mode")}</span>}
+        <div className="chat-toolbar-strip__group">
+          {!isMobile && <span className="chat-toolbar-strip__label" style={labelStyle}>{i18next.t("chat:Mode")}</span>}
           <Segmented
             value={generationMode}
             onChange={onGenerationModeChange}
@@ -357,8 +349,8 @@ const StoreInfoTitle = (props) => {
       )}
 
       {modelProviders.length > 0 && (
-        <div style={{display: "flex", alignItems: "center"}}>
-          {!isMobile && <span style={labelStyle}>{i18next.t("general:Model")}</span>}
+        <div className="chat-toolbar-strip__group">
+          {!isMobile && <span className="chat-toolbar-strip__label" style={labelStyle}>{i18next.t("general:Model")}</span>}
           {filteredModelProviders.length === 0 ? (
             <span style={{fontSize: "13px", color: isDark ? "#555" : "#bbb"}}>{i18next.t("chat:No models for this mode")}</span>
           ) : (
@@ -393,15 +385,15 @@ const StoreInfoTitle = (props) => {
       )}
 
       {storeInfo?.showAutoRead && (
-        <div style={{display: "flex", alignItems: "center", gap: "6px"}}>
-          <span style={labelStyle}>{i18next.t("store:Auto read")}</span>
+        <div className="chat-toolbar-strip__group">
+          <span className="chat-toolbar-strip__label" style={labelStyle}>{i18next.t("store:Auto read")}</span>
           <Switch size="small" checked={autoRead} onChange={checked => onUpdateAutoRead(checked)} />
         </div>
       )}
 
       {showPaneControls && canManagePanes && (
-        <div style={{display: "flex", alignItems: "center", gap: "6px"}}>
-          <span style={{...labelStyle, marginRight: 0}}>{i18next.t("chat:Panes")}: {paneCount}</span>
+        <div className="chat-toolbar-strip__group">
+          <span className="chat-toolbar-strip__label" style={{...labelStyle, marginRight: 0}}>{i18next.t("chat:Panes")}: {paneCount}</span>
           <Button size="small" shape="circle" icon={<PlusOutlined />} onClick={addPane} />
           <Button size="small" shape="circle" icon={<MinusOutlined />} onClick={deletePane} disabled={paneCount <= 1} />
         </div>

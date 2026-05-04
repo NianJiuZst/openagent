@@ -339,7 +339,7 @@ class BaseListPage extends React.Component {
     }
 
     return (
-      <div>
+      <div className="page-surface page-surface--list">
         {this.renderTable(this.state.data)}
       </div>
     );

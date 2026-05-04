@@ -279,17 +279,9 @@ class ChatMenu extends React.Component {
     const getNewChatButton = () => {
       return (
         <Button
+          className="chat-sidebar__new-button"
           type="primary"
           icon={<PlusOutlined />}
-          style={{
-            width: "calc(100% - 16px)",
-            height: "38px",
-            margin: "8px",
-            borderRadius: "8px",
-            fontWeight: 500,
-            fontSize: "14px",
-            boxShadow: "0 1px 4px rgba(0,0,0,0.12)",
-          }}
           disabled={hasEmptyChat}
           onClick={() => {
             if (currentStoreName) {
@@ -320,9 +312,9 @@ class ChatMenu extends React.Component {
     const items = this.chatsToItems(this.props.chats, this.props.currentStoreName);
 
     return (
-      <div style={{height: "100%", display: "flex", flexDirection: "column"}}>
+      <div className="chat-sidebar">
         {this.renderAddChatButton(this.props.stores, this.props.currentStoreName)}
-        <div style={{flex: 1, overflow: "hidden", paddingRight: "4px"}}>
+        <div className="chat-sidebar__list">
           <Menu
             className="chat-sidebar-menu"
             style={{

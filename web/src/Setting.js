@@ -2588,12 +2588,48 @@ function hueToRgb(p, q, t) {
   return p;
 }
 
+function getCssRgbChannels(color) {
+  if (!color || typeof color !== "string") {
+    return "64, 64, 64";
+  }
+
+  const normalized = color.trim();
+  const rgbMatch = normalized.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
+  if (rgbMatch) {
+    return `${rgbMatch[1]}, ${rgbMatch[2]}, ${rgbMatch[3]}`;
+  }
+
+  if (!normalized.startsWith("#")) {
+    return "64, 64, 64";
+  }
+
+  let hex = normalized.slice(1);
+  if (hex.length === 3) {
+    hex = hex.split("").map(char => `${char}${char}`).join("");
+  }
+
+  if (hex.length !== 6) {
+    return "64, 64, 64";
+  }
+
+  const value = parseInt(hex, 16);
+  if (Number.isNaN(value)) {
+    return "64, 64, 64";
+  }
+
+  return `${(value >> 16) & 255}, ${(value >> 8) & 255}, ${value & 255}`;
+}
+
 export function updateTheme(color) {
   ThemeDefault.colorPrimary = color ? color : getThemeColor();
   ThemeDefault.colorBackground = lighten(ThemeDefault.colorPrimary, 45).toString();
   ThemeDefault.colorButton = lighten(ThemeDefault.colorPrimary, 20).toString();
   ThemeDefault.colorBackgroundSecondary = "rgb(242 242 242)";
+  const themeColorRgb = getCssRgbChannels(ThemeDefault.colorPrimary);
   document.documentElement.style.setProperty("--theme-color", ThemeDefault.colorPrimary);
+  document.documentElement.style.setProperty("--theme-color-rgb", themeColorRgb);
+  document.documentElement.style.setProperty("--theme-color-soft", `rgba(${themeColorRgb}, 0.10)`);
+  document.documentElement.style.setProperty("--theme-color-soft-strong", `rgba(${themeColorRgb}, 0.18)`);
   document.documentElement.style.setProperty("--theme-background", ThemeDefault.colorBackground);
   document.documentElement.style.setProperty("--theme-button", ThemeDefault.colorButton);
   document.documentElement.style.setProperty("--theme-background-secondary", ThemeDefault.colorBackgroundSecondary);

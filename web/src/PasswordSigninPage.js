@@ -86,31 +86,53 @@ class PasswordSigninPage extends React.Component {
     }
 
     return (
-      <div style={{display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh", background: "#ffffff"}}>
-        <div style={{width: "340px"}}>
-          <div style={{textAlign: "center", marginBottom: "36px"}}>
-            <img src={this.props.logo} alt="OpenAgent" style={{width: "260px", maxWidth: "100%"}} />
+      <div className="signin-page">
+        <div className="signin-page__orbs">
+          <div className="signin-page__orb signin-page__orb--primary" />
+          <div className="signin-page__orb signin-page__orb--secondary" />
+        </div>
+        <div className="signin-page__panel">
+          <div className="signin-page__hero">
+            <div className="signin-page__badge">OPENAGENT</div>
+            <div style={{marginBottom: "36px"}}>
+              <img src={this.props.logo} alt="OpenAgent" style={{width: "260px", maxWidth: "100%"}} />
+            </div>
+            <h1 className="signin-page__title">Ship ideas faster.</h1>
+            <p className="signin-page__subtitle">
+              {i18next.t("chat:I'm here to help answer your questions")}
+            </p>
+            <div className="signin-page__meta">
+              <span>AI Workspace</span>
+              <span>Knowledge Base</span>
+              <span>Cloud Runtime</span>
+            </div>
           </div>
-          <Form initialValues={{username: "admin"}} onFinish={(values) => this.onFinish(values)} requiredMark={false}>
-            <Form.Item name="username" rules={[{required: true, message: i18next.t("account:Please input your username")}]}>
-              <Input
-                prefix={<UserOutlined style={{fontSize: "16px", color: "#222222"}} />}
-                placeholder={i18next.t("general:Username")}
-                style={{height: "42px", borderRadius: "10px", fontSize: "14px"}}
-              />
-            </Form.Item>
-            <Form.Item name="password" rules={[{required: true, message: i18next.t("account:Please input your password")}]}>
-              <Input.Password
-                prefix={<LockOutlined style={{fontSize: "16px", color: "#222222"}} />}
-                placeholder={i18next.t("general:Password")}
-                autoFocus
-                style={{height: "42px", borderRadius: "10px", fontSize: "14px"}}
-              />
-            </Form.Item>
-            <Button type="primary" htmlType="submit" block style={{height: "42px", borderRadius: "10px", marginTop: "8px", background: "#242424", borderColor: "#242424", fontSize: "14px"}}>
-              {i18next.t("account:Sign In")}
-            </Button>
-          </Form>
+          <div className="signin-page__card">
+            <div className="signin-page__card-header">
+              <h2>{i18next.t("account:Sign In")}</h2>
+              <p>{i18next.t("general:Username")} / {i18next.t("general:Password")}</p>
+            </div>
+            <Form className="signin-page__form" initialValues={{username: "admin"}} onFinish={(values) => this.onFinish(values)} requiredMark={false}>
+              <Form.Item name="username" rules={[{required: true, message: i18next.t("account:Please input your username")}]}>
+                <Input
+                  prefix={<UserOutlined style={{fontSize: "16px", color: "#222222"}} />}
+                  placeholder={i18next.t("general:Username")}
+                  style={{height: "50px", fontSize: "15px"}}
+                />
+              </Form.Item>
+              <Form.Item name="password" rules={[{required: true, message: i18next.t("account:Please input your password")}]}>
+                <Input.Password
+                  prefix={<LockOutlined style={{fontSize: "16px", color: "#222222"}} />}
+                  placeholder={i18next.t("general:Password")}
+                  autoFocus
+                  style={{height: "50px", fontSize: "15px"}}
+                />
+              </Form.Item>
+              <Button type="primary" htmlType="submit" block style={{height: "50px", marginTop: "12px", fontSize: "15px"}}>
+                {i18next.t("account:Sign In")}
+              </Button>
+            </Form>
+          </div>
         </div>
       </div>
     );

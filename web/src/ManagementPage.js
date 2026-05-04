@@ -163,6 +163,42 @@ function getMenuParentKey(uri) {
   return null;
 }
 
+function isEditorPath(uri) {
+  if (!uri) {
+    return false;
+  }
+
+  const editorPatterns = [
+    /^\/account$/,
+    /^\/stores\/[^/]+\/[^/]+$/,
+    /^\/videos\/[^/]+\/[^/]+$/,
+    /^\/providers\/[^/]+$/,
+    /^\/tools\/[^/]+$/,
+    /^\/servers\/[^/]+$/,
+    /^\/vectors\/[^/]+$/,
+    /^\/chats\/[^/]+$/,
+    /^\/messages\/[^/]+$/,
+    /^\/sites\/[^/]+$/,
+    /^\/templates\/[^/]+$/,
+    /^\/applications\/[^/]+$/,
+    /^\/nodes\/[^/]+$/,
+    /^\/records\/[^/]+\/[^/]+$/,
+    /^\/machines\/[^/]+\/[^/]+$/,
+    /^\/assets\/[^/]+$/,
+    /^\/scans\/[^/]+$/,
+    /^\/images\/[^/]+\/[^/]+$/,
+    /^\/containers\/[^/]+\/[^/]+$/,
+    /^\/pods\/[^/]+\/[^/]+$/,
+    /^\/workflows\/[^/]+$/,
+    /^\/tasks\/[^/]+\/[^/]+$/,
+    /^\/scales\/[^/]+\/[^/]+$/,
+    /^\/forms\/[^/]+$/,
+    /^\/articles\/[^/]+$/,
+  ];
+
+  return editorPatterns.some((pattern) => pattern.test(uri));
+}
+
 const siderMenuOpenKeysLsKey = "siderMenuOpenKeys";
 
 const defaultMenuOpenKeys = ["/basic", "/knowledge-base", "/connectors", "/admin"];
@@ -251,6 +287,7 @@ function ManagementPage(props) {
   const currentUri = uri || location.pathname;
   const firstSeg = currentUri.split("/").filter(Boolean)[0] || "";
   const selectedLeafKey = (firstSeg === "" || firstSeg === "home") ? "/chat" : ("/" + firstSeg);
+  const editorPage = isEditorPath(currentUri);
 
   const isDark = themeAlgorithm.includes("dark");
   const textColor = isDark ? "white" : "black";
@@ -787,36 +824,36 @@ function ManagementPage(props) {
     };
 
     return (
-      <Header style={{display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 8px 0 0", marginBottom: "0", backgroundColor: isDark ? "#141414" : "#ffffff", position: "sticky", top: 0, zIndex: 99, borderBottom: isDark ? "1px solid rgba(255,255,255,0.07)" : "1px solid #f0f0f0", boxShadow: "none", height: "52px", lineHeight: "52px"}}>
-        <div style={{display: "flex", alignItems: "center"}}>
+      <Header className="app-shell__header">
+        <div className="app-shell__header-left">
           {Setting.isMobile() ? (
             <React.Fragment>
               <Drawer title={i18next.t("general:Close")} placement="left" open={menuVisible} onClose={onClose}>
                 <Menu
+                  className="app-shell__menu"
                   items={getMenuItems()}
                   mode={"inline"}
                   selectedKeys={[selectedLeafKey]}
                   openKeys={menuOpenKeys}
                   onOpenChange={setMenuOpenKeys}
-                  style={{lineHeight: "48px"}}
                   onClick={onClick}
                 />
               </Drawer>
-              <Button icon={<BarsOutlined />} onClick={showMenu} type="text">
+              <Button className="app-shell__icon-button" icon={<BarsOutlined />} onClick={showMenu} type="text">
                 {i18next.t("general:Menu")}
               </Button>
             </React.Fragment>
           ) : (
             <Button
+              className="app-shell__icon-button"
               icon={siderCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
               onClick={toggleSider}
               type="text"
-              style={{fontSize: 16, width: 40, height: 40}}
             />
           )}
           <BreadcrumbBar uri={currentUri} />
         </div>
-        <div style={{flexShrink: 0}}>
+        <div className="app-shell__header-right">
           {renderAccountMenu()}
         </div>
       </Header>
@@ -830,7 +867,7 @@ function ManagementPage(props) {
 
     return (
       <React.Fragment>
-        <Footer id="footer" style={{textAlign: "center", height: "67px"}}>
+        <Footer id="footer" className="app-shell__footer">
           <div dangerouslySetInnerHTML={{__html: Setting.getFooterHtml(themeAlgorithm, site?.footerHtml)}} />
         </Footer>
       </React.Fragment>
@@ -843,78 +880,78 @@ function ManagementPage(props) {
   if (window.location.pathname === "/signin") {
     return renderRouter();
   }
-  const contentMarginLeft = showSider ? (siderCollapsed ? siderCollapsedWidth : siderWidth) : 0;
+  const contentMarginLeft = showSider ? (siderCollapsed ? siderCollapsedWidth : siderWidth) + 20 : 0;
 
   return (
     <React.Fragment>
       {showSider && (
         <Sider
+          className={`app-shell__sider${siderCollapsed ? " app-shell__sider--collapsed" : ""}`}
           collapsed={siderCollapsed}
           collapsedWidth={siderCollapsedWidth}
           width={siderWidth}
           trigger={null}
           theme={isDark ? "dark" : "light"}
           style={{
-            height: "100vh",
+            height: "auto",
             position: "fixed",
-            left: 0,
-            top: 0,
-            bottom: 0,
+            left: 14,
+            top: 14,
+            bottom: 14,
             zIndex: 100,
-            boxShadow: "none",
-            borderRight: isDark ? "1px solid rgba(255,255,255,0.07)" : "1px solid #eaedf3",
-            background: isDark ? "#141414" : "#fafbfc",
             display: "flex",
             flexDirection: "column",
           }}
         >
-          <div style={{
-            height: 52,
-            flexShrink: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: siderCollapsed ? "center" : "flex-start",
-            padding: siderCollapsed ? "0" : "0 16px 0 24px",
-            overflow: "hidden",
-            borderBottom: isDark ? "1px solid rgba(255,255,255,0.07)" : "1px solid #eaedf3",
-          }}>
+          <div className="app-shell__sider-brand">
             <Link to="/">
               <img
+                className="app-shell__logo"
                 src={siderLogo}
                 alt="logo"
                 style={{
-                  height: siderCollapsed ? 28 : 38,
+                  height: siderCollapsed ? 28 : 40,
                   width: siderCollapsed ? 28 : undefined,
                   maxWidth: siderCollapsed ? 28 : 160,
                   objectFit: "contain",
-                  borderRadius: siderCollapsed ? 6 : 0,
+                  borderRadius: siderCollapsed ? 10 : 0,
                   transition: "max-width 0.2s, height 0.2s, width 0.2s",
                 }}
               />
             </Link>
           </div>
-          <div className="sider-menu-container" style={{flex: 1, overflow: "auto", paddingTop: "6px"}}>
+          <div className="sider-menu-container app-shell__sider-menu">
             <Menu
+              className="app-shell__menu"
               mode="inline"
               items={getMenuItems()}
               selectedKeys={[selectedLeafKey]}
               openKeys={menuOpenKeys}
               onOpenChange={setMenuOpenKeys}
               theme={isDark ? "dark" : "light"}
-              style={{borderRight: 0, background: isDark ? "#141414" : "#fafbfc"}}
+              style={{borderRight: 0}}
               onClick={({key}) => onMenuClick({key})}
             />
           </div>
         </Sider>
       )}
-      <div style={{marginLeft: contentMarginLeft, transition: "margin-left 0.2s", display: "flex", flexDirection: "column", minHeight: "100vh"}}>
+      <div className={`app-shell${showSider ? " app-shell--with-sider" : ""}`} style={{marginLeft: contentMarginLeft, transition: "margin-left 0.2s", minHeight: "100vh"}}>
         {renderHeader()}
-        <Content style={{display: "flex", flexDirection: "column"}}>
+        <Content className="app-shell__main">
+          <div className="app-shell__ambient">
+            <div className="app-shell__orb app-shell__orb--primary" />
+            <div className="app-shell__orb app-shell__orb--secondary" />
+            <div className="app-shell__orb app-shell__orb--tertiary" />
+          </div>
           {isWithoutCard() ?
-            renderRouter() :
-            <Card className="content-warp-card" styles={{body: {padding: 0, margin: 0}}}>
+            <div className={`app-shell__page app-shell__page--fluid${editorPage ? " app-shell__page--editor" : ""}`}>
               {renderRouter()}
-            </Card>
+            </div> :
+            <div className={`app-shell__page${editorPage ? " app-shell__page--editor" : ""}`}>
+              <Card className="content-warp-card app-shell__content-card" styles={{body: {padding: 0, margin: 0}}}>
+                {renderRouter()}
+              </Card>
+            </div>
           }
         </Content>
         {renderFooter()}

@@ -388,8 +388,8 @@ class ChatBox extends React.Component {
     const hasUrlMessage = urlParams.get("newMessage");
 
     return (
-      <Layout style={{display: "flex", width: "100%", height: "100%", borderRadius: "6px", ...this.props.styles?.layout}}>
-        <Card variant="borderless" style={{display: "flex", width: "100%", height: "100%", flexDirection: "column", position: "relative", padding: "0", boxShadow: "none", ...this.props.styles?.card}}>
+      <Layout className="chat-canvas" style={{display: "flex", width: "100%", height: "100%", ...this.props.styles?.layout}}>
+        <Card className="chat-canvas__card" variant="borderless" style={{display: "flex", width: "100%", height: "100%", flexDirection: "column", position: "relative", padding: "0", boxShadow: "none", ...this.props.styles?.card}}>
           {messages.length === 0 && !hasUrlMessage && <WelcomeHeader store={this.props.store} />}
 
           <MessageList

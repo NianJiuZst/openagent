@@ -757,14 +757,14 @@ class ChatPage extends BaseListPage {
 
     if (this.state.loading) {
       return (
-        <div style={{display: "flex", justifyContent: "center", alignItems: "center", height: "calc(100vh - 120px)"}}>
+        <div className="chat-workspace__loading" style={{height: "calc(100vh - 120px)"}}>
           <Spin size="large" tip={i18next.t("general:Loading")} />
         </div>
       );
     }
 
     return (
-      <div style={{display: "flex", height: (Setting.getUrlParam("isRaw") !== null) ? "calc(100vh)" : (window.location.pathname.startsWith("/chat")) ? "calc(100vh - 135px)" : Setting.isMobile() ? "calc(100vh - 136px)" : "calc(100vh - 135px)"}}>
+      <div className={`chat-workspace${isDark ? " chat-workspace--dark" : ""}`} style={{height: (Setting.getUrlParam("isRaw") !== null) ? "calc(100vh)" : (window.location.pathname.startsWith("/chat")) ? "calc(100vh - 135px)" : Setting.isMobile() ? "calc(100vh - 136px)" : "calc(100vh - 135px)"}}>
         {
           this.renderModal()
         }
@@ -773,14 +773,7 @@ class ChatPage extends BaseListPage {
         }
         {
           !(Setting.isMobile() || Setting.getUrlParam("isRaw") !== null) && !this.state.chatMenuCollapsed && (
-            <div style={{
-              width: "250px",
-              height: "100%",
-              marginRight: "0",
-              background: isDark ? "#1a1a1a" : "#f7f8fa",
-              borderRight: isDark ? "1px solid rgba(255,255,255,0.08)" : "1px solid #ebebeb",
-              flexShrink: 0,
-            }}>
+            <div className="chat-workspace__sidebar">
               <ChatMenu ref={this.menu} chats={chats} chatName={this.getChat()} onSelectChat={onSelectChat} onAddChat={onAddChat} onDeleteChat={onDeleteChat} onUpdateChatName={onUpdateChatName} stores={this.state.stores} currentStoreName={currentStoreName} />
             </div>
           )
@@ -793,14 +786,14 @@ class ChatPage extends BaseListPage {
           </Drawer>
         )}
 
-        <div style={{flex: 1, height: "100%", position: "relative", display: "flex", flexDirection: "column", minWidth: 0}}>
+        <div className="chat-workspace__main">
           {this.state.paneCount === 1 && (this.state.chat || Setting.isMobile() || Setting.getUrlParam("isRaw") === null) && (
-            <div style={{display: "flex", alignItems: "center", borderBottom: isDark ? "1px solid rgba(255,255,255,0.08)" : "1px solid #f0f0f0", background: isDark ? "rgba(20,20,20,0.9)" : "rgba(255,255,255,0.9)", backdropFilter: "blur(8px)"}}>
+            <div className="chat-workspace__toolbar">
               {Setting.isMobile() && (
-                <Button type="text" icon={<BarsOutlined />} onClick={this.toggleChatMenu} style={{margin: "0 4px"}} />
+                <Button className="app-shell__icon-button" type="text" icon={<BarsOutlined />} onClick={this.toggleChatMenu} style={{margin: "0 4px"}} />
               )}
               {!(Setting.isMobile() || Setting.getUrlParam("isRaw") !== null) && (
-                <Button type="text" icon={this.state.chatMenuCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />} onClick={this.toggleChatMenuCollapse} style={{margin: "0 4px"}} />
+                <Button className="app-shell__icon-button" type="text" icon={this.state.chatMenuCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />} onClick={this.toggleChatMenuCollapse} style={{margin: "0 4px"}} />
               )}
               {this.state.chat ? (
                 <div style={{flex: 1}}>
@@ -815,24 +808,9 @@ class ChatPage extends BaseListPage {
           {this.state.paneCount > 1 ? (
             <MultiPaneManager stores={this.state.stores} filteredStores={this.state.filteredStores} defaultStore={this.state.defaultStore} account={this.props.account} messageLoading={this.state.messageLoading} messageError={this.state.messageError} onCancelMessage={this.cancelMessage} initialChat={this.state.chat} onChatUpdate={(chat) => this.setState({chat})} onSetMessageLoading={(loading) => this.setState({messageLoading: loading})} paneCount={this.state.paneCount} onPaneCountChange={(count) => this.setState({paneCount: count})} />
           ) : (
-            <div style={{flex: 1, position: "relative", overflow: "auto"}}>
+            <div className="chat-workspace__body">
               {(this.state.messages === undefined || this.state.messages === null) ? null : (
-                <div style={{
-                  position: "absolute",
-                  top: -50,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  backgroundImage: `url(${Conf.StaticBaseUrl}/img/openagent-logo_1600x276.png)`,
-                  backgroundPosition: "center",
-                  backgroundRepeat: "no-repeat",
-                  backgroundSize: "200px auto",
-                  backgroundBlendMode: "luminosity",
-                  filter: "grayscale(80%) brightness(140%) contrast(90%)",
-                  opacity: 0.5,
-                  pointerEvents: "none",
-                }}>
-                </div>
+                <div className="chat-workspace__watermark" style={{backgroundImage: `url(${Conf.StaticBaseUrl}/img/openagent-logo_1600x276.png)`}} />
               )}
               <ChatBox
                 ref={this.chatBox}
