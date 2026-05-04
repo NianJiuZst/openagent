@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export const DefaultColorPrimary = "#404040";
+export const DefaultColorPrimary = "#1a1a1a";
 
 export const AuthConfig = {serverUrl: "", clientId: "", appName: "", organizationName: "", redirectPath: ""};
 export let EnableExtraPages = false;
